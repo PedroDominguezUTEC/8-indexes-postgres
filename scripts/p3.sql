@@ -1,4 +1,7 @@
 -- Create table
+
+DROP TABLE IF EXISTS news CASCADE;
+
 CREATE TABLE news(
     num integer,
     id integer,
@@ -28,15 +31,15 @@ WHERE x.id = news.id;
 CREATE INDEX idx_content_ts ON news USING gin(content_ts);
 
 -- Ranked query on indexed attribute
-SELECT title, description, ts_rank_cd(content_ts, query_ts) AS score 
-FROM film, to_tsquery('english', 'trump | president') query_ts 
+SELECT title, content, ts_rank_cd(content_ts, query_ts) AS score 
+FROM news, to_tsquery('english', 'trump | president') query_ts 
 WHERE query_ts @@ content_ts
 ORDER BY score DESC
 limit 100;
 
 -- Ranked query on non-indexed attribute
-SELECT title, description, ts_rank_cd(content_ts, query_ts) AS score 
-FROM film, to_tsquery('english', 'trump | president') query_ts 
+SELECT title, content, ts_rank_cd(content_ts, query_ts) AS score 
+FROM news, to_tsquery('english', 'trump | president') query_ts 
 WHERE query_ts @@ content_ts
 ORDER BY score DESC
 limit 100;
