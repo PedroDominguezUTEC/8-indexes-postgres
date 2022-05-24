@@ -27,6 +27,18 @@ SET content_ts = x.content_ts FROM (
 	) AS x
 WHERE x.id = news.id;
 
+ALTER TABLE news ADD COLUMN content_ts_no_index tsvector;
+
+UPDATE news
+SET content_ts_no_index = x.content_ts FROM (
+	SELECT id,
+			setweight(to_tsvector('english', title), 'A') || 
+			setweight(to_tsvector('english', content), 'B') AS content_ts 
+	FROM news
+	) AS x
+WHERE x.id = news.id;
+
+
 -- Create index
 CREATE INDEX idx_content_ts ON news USING gin(content_ts);
 
