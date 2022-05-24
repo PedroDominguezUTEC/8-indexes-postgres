@@ -1,10 +1,6 @@
---CREATE SCHEMA lab82;
---SET search_path = lab82;
+DROP SCHEMA IF EXISTS lab82 CASCADE;
 
---CREATE EXTENSION pg_trgm;
-
-DROP TABLE IF EXISTS p1;
-DROP EXTENSION IF EXISTS pg_trgm;
+CREATE SCHEMA lab82;
 SET search_path = lab82;
 
 CREATE EXTENSION pg_trgm;
